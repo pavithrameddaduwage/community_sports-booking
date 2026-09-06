@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --field-green: #163b2c;
+  --field-green-dark: #10291f;
+  --field-green-light: #22523e;
+  --field-orange: #c85a28;
+  --field-orange-hover: #b04c1f;
+  --field-gold: #d99b26;
+  --field-cream: #f7f5ee;
+  --field-card-bg: #ffffff;
+  --field-text-dark: #14221d;
+  --field-text-muted: #566760;
+  --field-border: #e2ded3;
+  --field-badge-bg: #e6efea;
+  --field-badge-text: #163b2c;
+}
+
+* {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--field-cream);
+  color: var(--field-text-dark);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Prototype Header Navigation */
+.prototype-bar {
+  background-color: #0b1713;
+  color: #8c9e97;
+  font-size: 0.78rem;
+  padding: 0.4rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  border-bottom: 1px solid #1a2c25;
+}
+
+.prototype-title {
+  color: #d1dcd7;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.prototype-pill {
+  color: #b0c2bb;
+  background-color: #162821;
+  padding: 0.2rem 0.65rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.prototype-pill:hover, .prototype-pill.active {
+  background-color: var(--field-orange);
+  color: #ffffff;
+}
+
+/* Main Navbar */
+.field-navbar {
+  background-color: var(--field-green);
+  padding: 0.85rem 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+.brand-logo {
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #ffffff !important;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+}
+
+.brand-icon {
+  width: 24px;
+  height: 24px;
+  background-color: var(--field-orange);
+  border: 2px solid #ffffff;
+  display: inline-block;
+}
+
+.nav-link-field {
+  color: #e1e9e5 !important;
+  font-weight: 500;
+  font-size: 0.92rem;
+  padding: 0.5rem 0.85rem !important;
+  transition: color 0.2s ease;
+}
+
+.nav-link-field:hover {
+  color: var(--field-gold) !important;
+}
+
+/* Buttons */
+.btn-field-orange {
+  background-color: var(--field-orange);
+  color: #ffffff !important;
+  font-weight: 600;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  transition: all 0.25 ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-field-orange:hover {
+  background-color: var(--field-orange-hover);
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(200, 90, 40, 0.3);
+}
+
+.btn-field-outline {
+  background-color: transparent;
+  color: #ffffff !important;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-field-outline:hover {
+  background-color: rgba(255,255,255,0.1);
+  border-color: #ffffff;
+}
+
+.btn-field-outline-dark {
+  background-color: transparent;
+  color: var(--field-green) !important;
+  font-weight: 600;
+  border: 1px solid var(--field-green);
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-field-outline-dark:hover {
+  background-color: var(--field-green);
+  color: #ffffff !important;
+}
+
+/* Hero Section */
+.hero-fieldhouse {
+  background-color: var(--field-green);
+  color: #ffffff;
+  padding: 4.5rem 1rem 4rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-fieldhouse::after {
+  content: '';
+  position: absolute;
+  right: -80px;
+  top: -80px;
+  width: 450px;
+  height: 450px;
+  border: 2px solid rgba(255,255,255,0.07);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-fieldhouse::before {
+  content: '';
+  position: absolute;
+  right: 50px;
+  bottom: -150px;
+  width: 550px;
+  height: 550px;
+  border: 2px solid rgba(255,255,255,0.05);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-headline {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  max-width: 650px;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #c5d6ce;
+  font-weight: 400;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-top: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* Sub-banner Gold */
+.gold-bar {
+  background-color: var(--field-gold);
+  color: #1c261f;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.8rem 1rem;
+  text-align: center;
+}
+
+/* Card Styles */
+.field-card {
+  background-color: var(--field-card-bg);
+  border: 1px solid var(--field-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.field-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
+.auth-card {
+  background-color: var(--field-card-bg);
+  border: 1px solid var(--field-border);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  padding: 2.5rem;
+}
+
+/* Badges & Tags */
+.field-badge {
+  background-color: var(--field-badge-bg);
+  color: var(--field-badge-text);
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 0.3em 0.75em;
+  border-radius: 50px;
+  display: inline-block;
+}
+
+.field-badge-orange {
+  color: var(--field-orange);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.sport-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 50px;
+  border: 1px solid var(--field-border);
+  background-color: #ffffff;
+  color: var(--field-text-dark);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.sport-chip.active, .sport-chip:hover {
+  background-color: var(--field-green);
+  color: #ffffff;
+  border-color: var(--field-green);
+}
+
+/* Price Styling */
+.price-lkr {
+  font-weight: 700;
+  color: var(--field-green);
+  font-size: 1.15rem;
+}
+
+/* Page Headers */
+.page-title {
+  font-weight: 800;
+  color: var(--field-text-dark);
+  font-size: 2rem;
+  letter-spacing: -0.5px;
+}
+
+/* Calendar Component */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.calendar-day-header {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--field-text-muted);
+  padding: 8px 0;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+  background-color: var(--field-badge-bg);
+  border-color: var(--field-green);
+}
+
+.calendar-day.selected {
+  background-color: var(--field-orange) !important;
+  color: #ffffff !important;
+  border-color: var(--field-orange) !important;
+  font-weight: 700;
+}
+
+/* Time Slot Pills */
+.slot-pill {
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: var(--field-text-dark);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.slot-pill:hover, .slot-pill.active {
+  background-color: var(--field-green);
+  color: #ffffff;
+  border-color: var(--field-green);
+}
+
+/* Footer */
+.field-footer {
+  background-color: var(--field-green-dark);
+  color: #9ab0a6;
+  font-size: 0.85rem;
+  padding: 2.5rem 0 1.5rem 0;
+  margin-top: auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}

@@ -1,0 +1,101 @@
+@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FIELDHOUSE Sports Booking</title>
+    <link rel="icon" type="image/svg+xml" href="~/favicon.svg" />
+    <link rel="shortcut icon" href="~/favicon.svg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <!-- Main Navigation Bar -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg field-navbar">
+            <div class="container">
+                <a class="brand-logo" asp-controller="Home" asp-action="Index">
+                    <span class="brand-icon"></span>
+                    FIELDHOUSE
+                </a>
+                <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-field @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active fw-bold text-warning" : "")" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-field @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Facilities" ? "active fw-bold text-warning" : "")" asp-controller="Facilities" asp-action="Index">Find a Facility</a>
+                        </li>
+                        @if (Context.Session.GetInt32("MemberId") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-field @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Bookings" ? "active fw-bold text-warning" : "")" asp-controller="Bookings" asp-action="MyBookings">My Bookings</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-field @(ViewContext.RouteData.Values["Action"]?.ToString() == "Programs" ? "active fw-bold text-warning" : "")" asp-controller="Home" asp-action="Programs">Programs</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center gap-2">
+                        @if (Context.Session.GetInt32("MemberId") != null)
+                        {
+                            <a class="btn btn-field-outline btn-sm" asp-controller="Account" asp-action="Profile">
+                                <i class="bi bi-person-circle me-1"></i>@Context.Session.GetString("MemberName")
+                            </a>
+                            <a class="btn btn-outline-light btn-sm ms-1" asp-controller="Account" asp-action="Logout">Sign Out</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-field-outline btn-sm" asp-controller="Account" asp-action="Login">Sign In</a>
+                            <a class="btn btn-field-orange btn-sm" asp-controller="Account" asp-action="Register">Become a Member</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="container mt-3">
+                <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="container mt-3">
+                <div class="alert alert-info alert-dismissible fade show shadow-sm rounded-3" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i>@TempData["InfoMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        }
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="field-footer">
+        <div class="container text-center">
+            <div class="brand-logo justify-content-center mb-2" style="font-size: 1.1rem;">
+                <span class="brand-icon" style="width: 18px; height: 18px;"></span> FIELDHOUSE
+            </div>
+            <p class="mb-1 text-light opacity-75">&copy; 2025 City Sports Council — Municipal Sports Facilities Booking</p>
+            <small class="text-muted">Built with ASP.NET Core MVC, Entity Framework &amp; SQLite</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

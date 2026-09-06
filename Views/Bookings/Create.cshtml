@@ -1,0 +1,220 @@
+@model CommunitySportsBooking.Models.Booking
+@{
+    var facility = ViewBag.Facility as CommunitySportsBooking.Models.Facility;
+    var slots = ViewBag.AvailableTimeSlots as List<string>;
+    ViewData["Title"] = "Book " + facility?.Name;
+}
+
+<div class="py-4" style="background-color: var(--field-cream); min-height: 85vh;">
+    <div class="container">
+        <!-- Header Banner -->
+        <div class="field-card p-4 mb-4 bg-white">
+            <div class="d-flex align-items-center gap-3">
+                <img src="@facility?.ImageUrl" 
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=600&q=80';"
+                     alt="@facility?.Name" class="rounded-3" style="width: 100px; height: 75px; object-fit: cover;">
+                <div>
+                    <h2 class="fw-bold text-dark mb-1">@facility?.Name</h2>
+                    <p class="text-muted small mb-0">
+                        @facility?.FacilityType • @facility?.Location • Floodlit • <i class="bi bi-star-fill text-warning"></i> Rating 4.6
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Create" method="post">
+            <input type="hidden" asp-for="FacilityId" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="row g-4">
+                <!-- Left Column: Calendar & Time Selection -->
+                <div class="col-lg-8">
+                    <div class="field-card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark mb-0"><i class="bi bi-calendar3 me-2"></i>Select Booking Date</h5>
+                            <span class="badge bg-light text-dark border" id="monthDisplay">@DateTime.Today.ToString("MMMM yyyy")</span>
+                        </div>
+
+                        <!-- Date Input -->
+                        <div class="mb-4">
+                            <input asp-for="BookingDate" id="BookingDateInput" type="date" class="form-control form-control-lg" min="@DateTime.Today.ToString("yyyy-MM-dd")" style="border-color: var(--field-border);" />
+                            <span asp-validation-for="BookingDate" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Calendar Grid Visual Component -->
+                        <div class="p-3 bg-light rounded-3 mb-4 border">
+                            <div class="calendar-grid mb-2">
+                                <div class="calendar-day-header">Su</div>
+                                <div class="calendar-day-header">Mo</div>
+                                <div class="calendar-day-header">Tu</div>
+                                <div class="calendar-day-header">We</div>
+                                <div class="calendar-day-header">Th</div>
+                                <div class="calendar-day-header">Fr</div>
+                                <div class="calendar-day-header">Sa</div>
+                            </div>
+                            <div class="calendar-grid" id="calendarDays">
+                                <!-- Rendered dynamically by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Time Slot Selection -->
+                        <div class="mb-3">
+                            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-clock me-2"></i>Select Available Time Slot</h5>
+                            <select asp-for="TimeSlot" id="TimeSlotSelect" class="form-select form-select-lg" style="border-color: var(--field-border);">
+                                <option value="">-- Choose an Available Hour Slot --</option>
+                                @if (slots != null)
+                                {
+                                    @foreach (var slot in slots)
+                                    {
+                                        <option value="@slot">@slot</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="TimeSlot" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Slot Pills Grid -->
+                        <div class="d-flex flex-wrap gap-2 mt-3" id="slotPills">
+                            @if (slots != null)
+                            {
+                                @foreach (var slot in slots)
+                                {
+                                    <span class="slot-pill" onclick="selectSlot('@slot')">@slot</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Booking Summary -->
+                <div class="col-lg-4">
+                    <div class="field-card p-4 sticky-top" style="top: 100px;">
+                        <h5 class="fw-bold text-dark mb-3">Booking summary</h5>
+
+                        <div class="d-flex flex-column gap-2 mb-4 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between small">
+                                <span class="text-muted">Facility</span>
+                                <strong class="text-dark">@facility?.Name</strong>
+                            </div>
+                            <div class="d-flex justify-content-between small">
+                                <span class="text-muted">Date</span>
+                                <strong class="text-dark" id="summaryDate">@DateTime.Today.AddDays(1).ToString("ddd, MMM dd, yyyy")</strong>
+                            </div>
+                            <div class="d-flex justify-content-between small">
+                                <span class="text-muted">Time</span>
+                                <strong class="text-dark" id="summaryTime">Not selected</strong>
+                            </div>
+                            <div class="d-flex justify-content-between small">
+                                <span class="text-muted">Duration</span>
+                                <strong class="text-dark">1 hour</strong>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-2">
+                                <span class="text-muted">Cost</span>
+                                <span class="price-lkr fs-4">Rs. @facility?.HourlyRate.ToString("N0")</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-field-orange btn-lg w-100 fw-bold">
+                                Confirm booking
+                            </button>
+                            <a asp-controller="Facilities" asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-2">
+                                Cancel
+                            </a>
+                        </div>
+
+                        <p class="small text-muted mb-0 leading-normal" style="font-size: 0.78rem;">
+                            <i class="bi bi-shield-check me-1 text-success"></i> You'll get a confirmation message. Cancel anytime up to 2 hours before your slot.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function selectSlot(slotText) {
+            const select = document.getElementById('TimeSlotSelect');
+            select.value = slotText;
+            document.getElementById('summaryTime').innerText = slotText;
+
+            const pills = document.querySelectorAll('.slot-pill');
+            pills.forEach(p => {
+                if (p.innerText === slotText) {
+                    p.classList.add('active');
+                } else {
+                    p.classList.remove('active');
+                }
+            });
+        }
+
+        document.getElementById('TimeSlotSelect').addEventListener('change', function () {
+            selectSlot(this.value);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('BookingDateInput');
+            const summaryDate = document.getElementById('summaryDate');
+            const calendarDays = document.getElementById('calendarDays');
+            const monthDisplay = document.getElementById('monthDisplay');
+
+            if (!dateInput.value) {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const yyyy = tomorrow.getFullYear();
+                const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+                const dd = String(tomorrow.getDate()).padStart(2, '0');
+                dateInput.value = `${yyyy}-${mm}-${dd}`;
+            }
+
+            function renderCalendar() {
+                if (!dateInput.value) return;
+
+                const parts = dateInput.value.split('-');
+                if (parts.length !== 3) return;
+
+                const year = parseInt(parts[0]);
+                const month = parseInt(parts[1]) - 1; // 0-indexed
+                const day = parseInt(parts[2]);
+
+                const selectedDate = new Date(year, month, day);
+
+                monthDisplay.innerText = selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                summaryDate.innerText = selectedDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' });
+
+                const firstDayIndex = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                calendarDays.innerHTML = '';
+
+                // Empty padding cells for first week
+                for (let i = 0; i < firstDayIndex; i++) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.className = 'calendar-day border-0 opacity-25';
+                    calendarDays.appendChild(emptyDiv);
+                }
+
+                // Days of month
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'calendar-day' + (d === day ? ' selected' : '');
+                    dayDiv.innerText = d;
+
+                    dayDiv.addEventListener('click', function () {
+                        const formattedMonth = String(month + 1).padStart(2, '0');
+                        const formattedDay = String(d).padStart(2, '0');
+                        dateInput.value = `${year}-${formattedMonth}-${formattedDay}`;
+                        renderCalendar();
+                    });
+
+                    calendarDays.appendChild(dayDiv);
+                }
+            }
+
+            dateInput.addEventListener('change', renderCalendar);
+            renderCalendar();
+        });
+    </script>
+}

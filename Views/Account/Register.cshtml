@@ -1,0 +1,122 @@
+@model CommunitySportsBooking.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Create your account";
+}
+
+<div class="py-5" style="background-color: var(--field-green); min-height: 90vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="auth-card">
+                    <div class="text-start mb-4">
+                        <span class="field-badge-orange">Member registration</span>
+                        <h2 class="fw-bold text-dark mt-1 mb-1" style="font-size: 1.8rem;">Create your account</h2>
+                        <p class="text-muted small">Full member accounts can book facilities and submit reviews.</p>
+                    </div>
+
+                    <form asp-action="Register" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label fw-semibold small text-dark">Full name</label>
+                            <input asp-for="FullName" class="form-control form-control-lg fs-6" placeholder="Amara Osei" style="border-color: var(--field-border);" />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold small text-dark">Email address</label>
+                            <input asp-for="Email" class="form-control form-control-lg fs-6" placeholder="amara.osei@example.com" style="border-color: var(--field-border);" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ContactNumber" class="form-label fw-semibold small text-dark">Phone number</label>
+                            <input asp-for="ContactNumber" class="form-control form-control-lg fs-6" placeholder="077 123 4567" style="border-color: var(--field-border);" />
+                            <span asp-validation-for="ContactNumber" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label fw-semibold small text-dark">Home address</label>
+                            <input asp-for="Address" class="form-control form-control-lg fs-6" placeholder="24 Maple Street, Colombo" style="border-color: var(--field-border);" />
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="PreferredSports" class="form-label fw-semibold small text-dark d-block">
+                                Preferred sports <span class="text-muted fw-normal">— select all that apply</span>
+                            </label>
+                            <input type="hidden" asp-for="PreferredSports" id="PreferredSportsHidden" />
+                            <div class="d-flex flex-wrap gap-2 mt-2" id="sportsChips">
+                                <span class="sport-chip active" data-sport="Tennis"><i class="bi bi-check2"></i> Tennis</span>
+                                <span class="sport-chip" data-sport="Soccer"><i class="bi bi-plus"></i> Soccer</span>
+                                <span class="sport-chip active" data-sport="Basketball"><i class="bi bi-check2"></i> Basketball</span>
+                                <span class="sport-chip" data-sport="Swimming"><i class="bi bi-plus"></i> Swimming</span>
+                                <span class="sport-chip" data-sport="Badminton"><i class="bi bi-plus"></i> Badminton</span>
+                                <span class="sport-chip" data-sport="Volleyball"><i class="bi bi-plus"></i> Volleyball</span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="Password" class="form-label fw-semibold small text-dark">Password</label>
+                                <input asp-for="Password" class="form-control form-control-lg fs-6" type="password" placeholder="••••••••" style="border-color: var(--field-border);" />
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ConfirmPassword" class="form-label fw-semibold small text-dark">Confirm password</label>
+                                <input asp-for="ConfirmPassword" class="form-control form-control-lg fs-6" type="password" placeholder="••••••••" style="border-color: var(--field-border);" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-field-orange btn-lg w-100">
+                                Create account
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="small text-muted mb-0">
+                            Already a member? <a asp-action="Login" class="fw-bold text-decoration-none" style="color: var(--field-orange);">Sign in</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chips = document.querySelectorAll('#sportsChips .sport-chip');
+            const hiddenInput = document.getElementById('PreferredSportsHidden');
+
+            function updateSports() {
+                const selected = [];
+                chips.forEach(chip => {
+                    if (chip.classList.contains('active')) {
+                        selected.push(chip.getAttribute('data-sport'));
+                    }
+                });
+                hiddenInput.value = selected.join(', ');
+            }
+
+            chips.forEach(chip => {
+                chip.addEventListener('click', function () {
+                    this.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    if (this.classList.contains('active')) {
+                        icon.className = 'bi bi-check2';
+                    } else {
+                        icon.className = 'bi bi-plus';
+                    }
+                    updateSports();
+                });
+            });
+
+            updateSports();
+        });
+    </script>
+}

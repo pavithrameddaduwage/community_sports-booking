@@ -1,0 +1,89 @@
+@model CommunitySportsBooking.Models.Facility
+@{
+    ViewData["Title"] = Model.Name;
+    double avgRating = Model.Reviews.Any() ? Model.Reviews.Average(r => r.Rating) : 4.6;
+}
+
+<div class="py-4" style="background-color: var(--field-cream); min-height: 85vh;">
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-7">
+                <div class="field-card overflow-hidden">
+                    <img src="@Model.ImageUrl" 
+                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=600&q=80';"
+                         alt="@Model.Name" class="w-100" style="height: 380px; object-fit: cover;">
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="field-badge">@Model.FacilityType</span>
+                            <div class="star-rating fs-5 text-warning">
+                                <i class="bi bi-star-fill"></i> @avgRating.ToString("0.0") <small class="text-muted">(@Model.Reviews.Count reviews)</small>
+                            </div>
+                        </div>
+                        <h1 class="h2 fw-bold text-dark mb-2">@Model.Name</h1>
+                        <p class="text-muted mb-4"><i class="bi bi-geo-alt-fill text-danger me-1"></i>@Model.Location</p>
+                        <h5 class="fw-bold mb-2 text-dark">About this Facility</h5>
+                        <p class="text-secondary leading-relaxed">@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="field-card p-4 sticky-top" style="top: 100px;">
+                    <span class="field-badge-orange mb-1 d-block">Facility Info</span>
+                    <h4 class="fw-bold mb-3 text-dark">Booking Information</h4>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded-3 border">
+                        <span class="text-muted small">Hourly Booking Rate:</span>
+                        <span class="price-lkr fs-3">Rs. @Model.HourlyRate.ToString("N0")</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded-3 border">
+                        <span class="text-muted small">Maximum Player Capacity:</span>
+                        <span class="fw-bold text-dark"><i class="bi bi-people me-1"></i>@Model.Capacity Persons</span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Bookings" asp-action="Create" asp-route-facilityId="@Model.FacilityId" class="btn btn-field-orange btn-lg w-100 fw-bold">
+                            <i class="bi bi-calendar-check me-2"></i>Book Facility Now
+                        </a>
+                        <a asp-controller="Reviews" asp-action="Create" asp-route-facilityId="@Model.FacilityId" class="btn btn-field-outline-dark btn-lg w-100 mt-2">
+                            <i class="bi bi-pencil-square me-2"></i>Write a Member Review
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Reviews Section -->
+        <div class="field-card p-4">
+            <h4 class="fw-bold mb-4 text-dark"><i class="bi bi-chat-left-quote me-2 text-warning"></i>Member Experience Reviews</h4>
+
+            @if (Model.Reviews.Any())
+            {
+                <div class="row g-3">
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded-3 border h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-dark">@review.Member?.FullName</span>
+                                    <div class="star-rating small text-warning">
+                                        @for (int i = 0; i < review.Rating; i++)
+                                        {
+                                            <i class="bi bi-star-fill"></i>
+                                        }
+                                    </div>
+                                </div>
+                                <p class="small text-secondary mb-1">"@review.Comment"</p>
+                                <small class="text-muted" style="font-size: 0.75rem;">Reviewed on @review.ReviewDate.ToString("yyyy-MM-dd")</small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted mb-0">No reviews have been submitted for this facility yet. Be the first to share your experience!</p>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Community Sports Programs";
+}
+
+<div class="py-5" style="background-color: var(--field-cream); min-height: 85vh;">
+    <div class="container">
+        <div class="mb-4">
+            <span class="field-badge-orange">Municipal Programs</span>
+            <h1 class="page-title mt-1 mb-2">Community Sports Programs</h1>
+            <p class="text-muted max-w-xl">
+                Our sports council offers structured leagues, youth coaching clinics, and social fitness initiatives across all municipal venues.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="field-card p-4 h-100 d-flex flex-column">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="p-3 rounded-circle me-3 text-white" style="background-color: var(--field-green);">
+                            <i class="bi bi-trophy display-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">Local Amateur Leagues</h4>
+                            <small class="text-muted">Tennis, Football &amp; Basketball</small>
+                        </div>
+                    </div>
+                    <p class="text-secondary flex-grow-1">
+                        Weekly competitive and casual leagues organized for local community members. Registered members can form teams or register individually to participate.
+                    </p>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-field-orange btn-sm mt-3 align-self-start">Join a League</a>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="field-card p-4 h-100 d-flex flex-column">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="p-3 rounded-circle me-3 text-white" style="background-color: var(--field-orange);">
+                            <i class="bi bi-person-workspace display-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0">Youth Coaching &amp; Training</h4>
+                            <small class="text-muted">Ages 6 to 18</small>
+                        </div>
+                    </div>
+                    <p class="text-secondary flex-grow-1">
+                        Professional coaching sessions held at municipal tennis courts and swimming pools to nurture young athletic talent and promote grassroots fitness.
+                    </p>
+                    <a asp-controller="Facilities" asp-action="Index" class="btn btn-field-outline-dark btn-sm mt-3 align-self-start">Explore Facilities</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+@model CommunitySportsBooking.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Sign in to Fieldhouse";
+}
+
+<div class="py-5" style="background-color: var(--field-green); min-height: 85vh; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="text-start mb-4">
+                        <span class="field-badge-orange">Members</span>
+                        <h2 class="fw-bold text-dark mt-1 mb-1" style="font-size: 1.8rem;">Sign in to Fieldhouse</h2>
+                        <p class="text-muted small">Book facilities, manage reservations and leave reviews.</p>
+                    </div>
+
+                    <form asp-action="Login" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold small text-dark">Email address</label>
+                            <input asp-for="Email" class="form-control form-control-lg fs-6" placeholder="admin@example.com" style="border-color: var(--field-border);" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-2">
+                            <label asp-for="Password" class="form-label fw-semibold small text-dark">Password</label>
+                            <input asp-for="Password" class="form-control form-control-lg fs-6" type="password" placeholder="••••••••" style="border-color: var(--field-border);" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="text-start mb-4">
+                            <a href="#" class="small text-decoration-none" style="color: var(--field-orange);">Forgot your password?</a>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-field-orange btn-lg w-100">
+                                Sign in
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="d-flex align-items-center my-4">
+                        <hr class="flex-grow-1 my-0" style="border-color: var(--field-border);" />
+                        <span class="px-3 small text-muted">or</span>
+                        <hr class="flex-grow-1 my-0" style="border-color: var(--field-border);" />
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Facilities" asp-action="Index" class="btn btn-field-outline-dark btn-lg w-100">
+                            Continue browsing as a guest
+                        </a>
+                    </div>
+
+                    <div class="bg-light p-3 rounded-3 mt-4 text-center border" style="border-color: var(--field-border) !important;">
+                        <small class="text-muted d-block">Demo Login Credentials:</small>
+                        <small class="fw-bold text-dark">admin@example.com</small> / <small class="fw-bold text-dark">1234</small>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="small text-muted mb-0">
+                            New to Fieldhouse? <a asp-action="Register" class="fw-bold text-decoration-none" style="color: var(--field-orange);">Create a member account</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

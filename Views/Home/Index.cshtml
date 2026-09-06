@@ -1,0 +1,101 @@
+@model IEnumerable<CommunitySportsBooking.Models.Facility>
+@{
+    ViewData["Title"] = "Fieldhouse - City Sports Council Booking";
+}
+
+<!-- Hero Section -->
+<div class="hero-fieldhouse">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="hero-headline">
+                    Your courts and fields, booked in under a minute.
+                </h1>
+                <p class="hero-subtitle">
+                    Fieldhouse is the City Sports Council's booking service for tennis courts, soccer fields, basketball courts and more — built to get more of the community playing.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-controller="Facilities" asp-action="Index" class="btn btn-field-orange btn-lg">
+                        Find a facility
+                    </a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-field-outline btn-lg">
+                        Become a member
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gold Highlight Bar -->
+<div class="gold-bar">
+    <div class="container d-flex justify-content-center justify-content-md-around flex-wrap gap-3">
+        <span><i class="bi bi-geo-alt-fill me-1"></i> @ViewBag.TotalFacilities facilities across the city</span>
+        <span><i class="bi bi-check-circle-fill me-1"></i> Free to join for all residents</span>
+        <span><i class="bi bi-clock-fill me-1"></i> Real-time availability &amp; same-day bookings</span>
+    </div>
+</div>
+
+<!-- Pick Your Sport Section -->
+<div class="py-5" style="background-color: var(--field-cream);">
+    <div class="container">
+        <div class="mb-4">
+            <span class="field-badge-orange">Facility types</span>
+            <h2 class="page-title mt-1 mb-2">Pick your sport</h2>
+            <p class="text-muted max-w-xl">
+                Every facility lists real-time availability, condition ratings from other members, and exact opening hours.
+            </p>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+            @foreach (var item in Model)
+            {
+                <div class="col animate-fade-in">
+                    <div class="field-card h-100 d-flex flex-column">
+                        <div class="position-relative">
+                            <img src="@item.ImageUrl" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=600&q=80';"
+                                 class="card-img-top" alt="@item.Name" style="height: 220px; object-fit: cover;">
+                            <span class="position-absolute top-0 start-0 m-3 field-badge">@item.FacilityType</span>
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                <h5 class="fw-bold text-dark mb-0 fs-5">@item.Name</h5>
+                            </div>
+                            <p class="text-muted small mb-2"><i class="bi bi-geo-alt me-1 text-danger"></i>@item.Location</p>
+                            <p class="text-secondary small flex-grow-1 mb-3">@item.Description</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                                <div>
+                                    <small class="text-muted d-block">Hourly Rate</small>
+                                    <span class="price-lkr">Rs. @item.HourlyRate.ToString("N0")</span>
+                                </div>
+                                <a asp-controller="Facilities" asp-action="Details" asp-route-id="@item.FacilityId" class="btn btn-field-orange btn-sm">
+                                    Book Facility
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Banner for Community Accounts -->
+        <div class="field-card p-4 p-md-5 bg-white border-0 shadow-sm rounded-4 text-center text-md-start">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="field-badge-orange mb-2 d-inline-block">Community Membership</span>
+                    <h3 class="fw-bold text-dark mb-2">Join the Municipal Sports Network</h3>
+                    <p class="text-muted mb-0">
+                        Create a free member account to access online court scheduling, real-time availability searches, and community member reviews.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-field-orange btn-lg w-100 w-md-auto">
+                        Create Free Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

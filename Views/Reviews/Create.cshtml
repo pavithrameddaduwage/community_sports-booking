@@ -1,0 +1,54 @@
+@model CommunitySportsBooking.Models.Review
+@{
+    var facility = ViewBag.Facility as CommunitySportsBooking.Models.Facility;
+    ViewData["Title"] = "Write Review for " + facility?.Name;
+}
+
+<div class="py-5" style="background-color: var(--field-cream); min-height: 85vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="auth-card">
+                    <div class="text-start mb-4">
+                        <span class="field-badge-orange">Submit Review</span>
+                        <h2 class="fw-bold text-dark mt-1 mb-1" style="font-size: 1.8rem;">Review Experience</h2>
+                        <p class="text-muted small">@facility?.Name (@facility?.Location)</p>
+                    </div>
+
+                    <form asp-action="Create" method="post">
+                        <input type="hidden" asp-for="FacilityId" />
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Rating" class="form-label fw-semibold small text-dark">Rating (1 to 5 Stars)</label>
+                            <select asp-for="Rating" class="form-select form-select-lg fs-6" style="border-color: var(--field-border);">
+                                <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Excellent Condition</option>
+                                <option value="4">⭐⭐⭐⭐ 4 Stars - Very Good</option>
+                                <option value="3">⭐⭐⭐ 3 Stars - Average</option>
+                                <option value="2">⭐⭐ 2 Stars - Needs Maintenance</option>
+                                <option value="1">⭐ 1 Star - Poor</option>
+                            </select>
+                            <span asp-validation-for="Rating" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Comment" class="form-label fw-semibold small text-dark">Your Review &amp; Comments</label>
+                            <textarea asp-for="Comment" class="form-control" rows="4" placeholder="Describe the condition of the court/pitch, floodlights, cleanliness, or amenities..." style="border-color: var(--field-border);"></textarea>
+                            <span asp-validation-for="Comment" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-field-orange btn-lg w-100">
+                                Submit Member Review
+                            </button>
+                            <a asp-controller="Facilities" asp-action="Details" asp-route-id="@facility?.FacilityId" class="btn btn-field-outline-dark btn-lg w-100 mt-1">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

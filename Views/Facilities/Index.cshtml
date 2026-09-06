@@ -1,0 +1,141 @@
+@model CommunitySportsBooking.Models.ViewModels.FacilitySearchViewModel
+@{
+    ViewData["Title"] = "Search Facilities";
+    var slots = ViewBag.AvailableTimeSlots as List<string>;
+    var sportTitle = string.IsNullOrWhiteSpace(Model.FacilityType) ? "All Facilities" : Model.FacilityType + " Courts & Pitches";
+}
+
+<div class="py-4" style="background-color: var(--field-cream); min-height: 85vh;">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Left Sidebar Filter -->
+            <div class="col-lg-3">
+                <div class="field-card p-4">
+                    <h6 class="fw-bold text-uppercase text-muted small mb-3" style="letter-spacing: 0.5px;">Filter Facilities</h6>
+                    <form method="get" asp-action="Index">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-dark">Facility type</label>
+                            <select asp-for="FacilityType" class="form-select form-select-sm" style="border-color: var(--field-border);">
+                                <option value="">All Types</option>
+                                @foreach (var type in Model.AvailableTypes)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-dark">Location</label>
+                            <select asp-for="Location" class="form-select form-select-sm" style="border-color: var(--field-border);">
+                                <option value="">All Locations</option>
+                                @foreach (var loc in Model.AvailableLocations)
+                                {
+                                    <option value="@loc">@loc</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-dark">Date</label>
+                            <input asp-for="SearchDate" type="date" class="form-control form-control-sm" style="border-color: var(--field-border);" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-dark">Time</label>
+                            <select asp-for="SearchTime" class="form-select form-select-sm" style="border-color: var(--field-border);">
+                                <option value="">Any time</option>
+                                @if (slots != null)
+                                {
+                                    @foreach (var slot in slots)
+                                    {
+                                        <option value="@slot">@slot</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-dark">Keyword</label>
+                            <input asp-for="SearchTerm" class="form-control form-control-sm" placeholder="Search court name..." style="border-color: var(--field-border);" />
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-field-orange w-100">
+                                Apply filters
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Reset filters</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h2 class="fw-bold text-dark mb-0" style="font-size: 1.7rem;">@sportTitle</h2>
+                        <p class="text-muted small mb-0">@Model.Facilities.Count facilities available</p>
+                    </div>
+                    <div>
+                        <select class="form-select form-select-sm" style="border-color: var(--field-border); width: 180px;">
+                            <option>Sort: Soonest available</option>
+                            <option>Sort: Price low to high</option>
+                            <option>Sort: Highest rated</option>
+                        </select>
+                    </div>
+                </div>
+
+                @if (Model.Facilities.Any())
+                {
+                    <div class="d-flex flex-column gap-3">
+                        @foreach (var facility in Model.Facilities)
+                        {
+                            double rating = facility.Reviews.Any() ? facility.Reviews.Average(r => r.Rating) : 4.6;
+                            <div class="field-card p-3 p-md-4">
+                                <div class="row align-items-center g-3">
+                                    <!-- Image / Pitch Thumbnail -->
+                                    <div class="col-md-3 col-lg-3">
+                                        <img src="@facility.ImageUrl" 
+                                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=600&q=80';"
+                                             alt="@facility.Name" class="w-100 rounded-3" style="height: 110px; object-fit: cover;">
+                                    </div>
+                                    <!-- Center Info -->
+                                    <div class="col-md-6 col-lg-6">
+                                        <h5 class="fw-bold text-dark mb-1">@facility.Name</h5>
+                                        <p class="text-muted small mb-2">@facility.Location • @facility.FacilityType • Capacity: @facility.Capacity players</p>
+                                        
+                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                            <span class="badge bg-light text-dark border">Floodlit</span>
+                                            <span class="badge bg-light text-dark border"><i class="bi bi-star-fill text-warning"></i> Rating @rating.ToString("0.0")</span>
+                                        </div>
+
+                                        <small class="text-success fw-semibold"><i class="bi bi-check-circle me-1"></i> Open slots available today</small>
+                                    </div>
+                                    <!-- Right Price & Action -->
+                                    <div class="col-md-3 col-lg-3 text-md-end border-top border-md-0 pt-3 pt-md-0">
+                                        <div class="mb-2">
+                                            <span class="price-lkr d-block fs-5">Rs. @facility.HourlyRate.ToString("N0")</span>
+                                            <small class="text-muted">/ hr member facility</small>
+                                        </div>
+                                        <a asp-controller="Bookings" asp-action="Create" asp-route-facilityId="@facility.FacilityId" class="btn btn-field-orange btn-sm rounded-2 px-3">
+                                            Book
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="field-card p-5 text-center">
+                        <i class="bi bi-search display-3 text-muted"></i>
+                        <h4 class="mt-3 text-dark">No facilities match your search</h4>
+                        <p class="text-muted">Try choosing a different sport type or resetting your date filter.</p>
+                        <a asp-action="Index" class="btn btn-field-orange">Reset Filters</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

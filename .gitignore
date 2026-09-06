@@ -1,0 +1,16 @@
+## Build & binary output
+[Bb]in/
+[Oo]bj/
+*.user
+*.userosscache
+*.sln.docstates
+
+## Database & local runtime files
+*.db-shm
+*.db-wal
+
+## IDE & OS metadata
+.DS_Store
+.vscode/
+.idea/
+*.suo
